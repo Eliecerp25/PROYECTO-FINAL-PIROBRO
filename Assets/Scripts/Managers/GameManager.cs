@@ -2,11 +2,11 @@
 // Cerebro del juego. Persiste entre escenas usando DontDestroyOnLoad.
 // Maneja vidas, personajes, niveles e intentos en Nivel 2.
 
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using PiroBros.Core;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using PiroBros.Core;
 
 namespace PiroBros.Managers
 {
@@ -141,7 +141,9 @@ namespace PiroBros.Managers
 
             if (currentScene == SCENE_LEVEL1)
             {
-                StartCoroutine(ReloadCurrentLevel(SCENE_LEVEL1));
+                // Mostrar Game Over y esperar al jugador
+                if (UIManager.Instance != null)
+                    UIManager.Instance.ShowGameOver();
             }
             else if (currentScene == SCENE_LEVEL2)
             {
@@ -149,12 +151,16 @@ namespace PiroBros.Managers
 
                 if (level2Attempts >= 2)
                 {
+                    // Game Over definitivo — volver a Nivel 1
                     level2Attempts = 0;
-                    StartCoroutine(GameOverToLevel1());
+                    if (UIManager.Instance != null)
+                        UIManager.Instance.ShowGameOver();
                 }
                 else
                 {
-                    StartCoroutine(ReloadCurrentLevel(SCENE_LEVEL2));
+                    // Primer intento fallido — mostrar panel y esperar
+                    if (UIManager.Instance != null)
+                        UIManager.Instance.ShowGameOver();
                 }
             }
         }
@@ -164,37 +170,6 @@ namespace PiroBros.Managers
             yield return new WaitForSeconds(0.5f);
             activeCharacter.Revive();
             UpdateUI();
-        }
-
-        private IEnumerator ReloadCurrentLevel(string sceneName)
-        {
-            if (UIManager.Instance != null)
-                UIManager.Instance.ShowGameOver();
-
-            yield return new WaitForSeconds(2f);
-
-            currentLives = startingLives;
-            isGameActive = true;
-
-            if (UIManager.Instance != null)
-                UIManager.Instance.HideGameOver();
-
-            SceneManager.LoadScene(sceneName);
-        }
-
-        private IEnumerator GameOverToLevel1()
-        {
-            if (UIManager.Instance != null)
-                UIManager.Instance.ShowGameOver();
-
-            yield return new WaitForSeconds(2f);
-
-            currentLives = startingLives;
-
-            if (UIManager.Instance != null)
-                UIManager.Instance.HideGameOver();
-
-            SceneManager.LoadScene(SCENE_LEVEL1);
         }
 
         // ────────────────────────────────────────────────────────────────────
@@ -249,7 +224,7 @@ namespace PiroBros.Managers
         }
 
         // ────────────────────────────────────────────────────────────────────
-        // RESET
+        // RESET — llamado por el botón Reiniciar
         // ────────────────────────────────────────────────────────────────────
 
         public void ResetGame()
@@ -263,9 +238,12 @@ namespace PiroBros.Managers
             characterPool.Clear();
             activeCharacter = null;
             currentLives = startingLives;
-            level2Attempts = 0;
 
-            SceneManager.LoadScene(SCENE_LEVEL1);
+            // Si falló dos veces en Nivel 2 volver al Nivel 1
+            // Si falló en Nivel 1 o primera vez en Nivel 2 recargar escena actual
+            string targetScene = level2Attempts == 0 ? SCENE_LEVEL1 : SCENE_LEVEL2;
+
+            SceneManager.LoadScene(targetScene);
         }
 
         // ────────────────────────────────────────────────────────────────────

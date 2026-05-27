@@ -9,7 +9,7 @@ namespace PiroBros.Player
         protected override void Initialize()
         {
             moveSpeed = 4.5f;
-            jumpForce = 11f;
+            jumpForce = 8f;
             currentWeapon = GetComponentInChildren<Weapon>();
         }
     }

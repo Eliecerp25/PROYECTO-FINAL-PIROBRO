@@ -38,6 +38,9 @@ namespace PiroBros.Enemies
         {
             if (!isAlive) return;
 
+            // Si el juego no está activo, detener toda la IA
+            if (Managers.GameManager.Instance != null && !Managers.GameManager.Instance.IsGameActive) return;
+
             FindPlayer();
             HandleShootingAI();
             HandleFlipTowardsPlayer();
