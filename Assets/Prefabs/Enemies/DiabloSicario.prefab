@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 1411675593253761194}
   - component: {fileID: 7101073363856815353}
   - component: {fileID: 6460775518823439717}
+  - component: {fileID: 449566340746781701}
   m_Layer: 0
   m_Name: DiabloSicario
   m_TagString: Untagged
@@ -61,7 +62,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.5909019, y: -1.4345323, z: 0}
-  m_LocalScale: {x: 0.8, y: 1.2, z: 1}
+  m_LocalScale: {x: 1.35, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1135722072193951837}
@@ -111,8 +112,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.398578, g: 0, b: 0.5396226, a: 1}
+  m_Sprite: {fileID: 720765414803502515, guid: d842e020f8a7aa84f90287f32bc5595b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -209,3 +210,25 @@ MonoBehaviour:
   projectilePrefab: {fileID: 9114644652724241440, guid: 756c577e749dac244ba2087393dc6573, type: 3}
   firePoint: {fileID: 1135722072193951837}
   projectileSpeed: 12
+--- !u!95 &449566340746781701
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7543859638291505217}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50009387e0929bc4a857c42049108703, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
