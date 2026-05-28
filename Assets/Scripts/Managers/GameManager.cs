@@ -198,7 +198,7 @@ namespace PiroBros.Managers
         }
 
         // ────────────────────────────────────────────────────────────────────
-        // BANDERA
+        // BANDERA - SIGUIENTE NIVEL
         // ────────────────────────────────────────────────────────────────────
 
         public void OnFlagReached()
@@ -208,7 +208,7 @@ namespace PiroBros.Managers
             string currentScene = SceneManager.GetActiveScene().name;
 
             if (currentScene == SCENE_LEVEL1)
-                StartCoroutine(LoadNextLevel(SCENE_LEVEL2));
+                StartCoroutine(LoadNextLevel    (SCENE_LEVEL2));
             else if (currentScene == SCENE_LEVEL2)
             {
                 isGameActive = false;
