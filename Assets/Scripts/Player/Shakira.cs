@@ -8,9 +8,8 @@ namespace PiroBros.Player
 
         protected override void Initialize()
         {
-            moveSpeed = 10f;
-            jumpForce = 8f;
             currentWeapon = GetComponentInChildren<Weapon>();
+            currentAbility = GetComponentInChildren<ShakiraAbility>();
         }
     }
 }

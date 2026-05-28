@@ -298,6 +298,21 @@ namespace PiroBros.Managers
                 UIManager.Instance.UpdateLives(currentLives);
         }
 
+        // ─── HABILIDAD ───
+        private float lastAbilityUseTime = -999f;
+        public float LastAbilityUseTime => lastAbilityUseTime;
+
+        public void RegisterAbilityUse()
+        {
+            lastAbilityUseTime = Time.time;
+        }
+
+        public float AbilityCooldownLeft =>
+            Mathf.Max(0f, (lastAbilityUseTime + 40f) - Time.time);
+
+        public bool AbilityOnCooldown =>
+            Time.time < lastAbilityUseTime + 40f;
+
         // ────────────────────────────────────────────────────────────────────
         // PROPIEDADES
         // ────────────────────────────────────────────────────────────────────

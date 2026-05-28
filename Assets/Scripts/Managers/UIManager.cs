@@ -35,6 +35,11 @@ namespace PiroBros.Managers
         [SerializeField] private GameObject characterSelectPanel;
         [SerializeField] private Button[] characterButtons;
 
+        [Header("Habilidad")]
+        [SerializeField] private TextMeshProUGUI abilityUsesText;
+        [SerializeField] private TextMeshProUGUI abilityCooldownText;
+        [SerializeField] private TextMeshProUGUI abilityMessageText;
+
         // ────────────────────────────────────────────────────────────────────
         // UNITY
         // ────────────────────────────────────────────────────────────────────
@@ -157,6 +162,37 @@ namespace PiroBros.Managers
         {
             if (victoryPanel != null)
                 victoryPanel.SetActive(false);
+        }
+
+        public void UpdateAbility(int remainingUses, float cooldownLeft)
+        {
+            if (abilityUsesText != null)
+                abilityUsesText.text = $"Habilidad: {remainingUses} usos";
+
+            if (abilityCooldownText != null)
+            {
+                if (cooldownLeft <= 0f) 
+                    abilityCooldownText.text = "Listo";
+                else
+                    abilityCooldownText.text = $"Listo en: {Mathf.CeilToInt(cooldownLeft)}s";
+            }
+        }
+
+        public void ShowAbilityMessage(string message)
+        {
+            if (abilityMessageText != null)
+            {
+                abilityMessageText.text = message;
+                // Ocultar el mensaje después de 2 segundos
+                CancelInvoke(nameof(HideAbilityMessage));
+                Invoke(nameof(HideAbilityMessage), 2f);
+            }
+        }
+
+        private void HideAbilityMessage()
+        {
+            if (abilityMessageText != null)
+                abilityMessageText.text = "";
         }
 
         // ────────────────────────────────────────────────────────────────────

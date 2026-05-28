@@ -17,7 +17,7 @@ namespace PiroBros.Weapons
 
         private void Awake()
         {
-            damage = 8;
+            damage = 20;
             fireRate = 0.5f;      // cooldown entre ráfagas completas
             projectileSpeed = 20f; // balas muy rápidas
         }

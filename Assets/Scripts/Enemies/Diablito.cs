@@ -13,7 +13,7 @@ namespace PiroBros.Enemies
     {
         protected override void Initialize()
         {
-            maxHealth = 50;
+            maxHealth = 1;
             moveSpeed = 2.5f;
             attackDamage = 15;
             detectionRange = 8f;

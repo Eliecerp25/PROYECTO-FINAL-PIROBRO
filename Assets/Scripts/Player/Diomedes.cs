@@ -1,3 +1,4 @@
+using UnityEngine;
 using PiroBros.Core;
 
 namespace PiroBros.Player
@@ -8,9 +9,8 @@ namespace PiroBros.Player
 
         protected override void Initialize()
         {
-            moveSpeed = 6f;
-            jumpForce = 8f;
             currentWeapon = GetComponentInChildren<Weapon>();
+            currentAbility = GetComponentInChildren<DiomedesAbility>();
         }
     }
 }

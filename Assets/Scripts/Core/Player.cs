@@ -1,7 +1,6 @@
 ﻿// Player.cs
 // Clase base abstracta de todos los personajes jugables.
-// La vida ahora es manejada por GameManager — Player solo
-// maneja movimiento, invencibilidad y feedback visual.
+// NUNCA se instancia directamente — es una plantilla.
 
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,12 +32,15 @@ namespace PiroBros.Core
         [Header("Combate")]
         [SerializeField] private float invincibilityDuration = 5f;
         private float lastDamageTime = -999f;
-        public bool IsInvincible => Time.time < lastDamageTime + invincibilityDuration;
+        private bool abilityInvincible = false;
+        public bool IsInvincible =>
+            Time.time < lastDamageTime + invincibilityDuration || abilityInvincible;
 
         // ─── REFERENCIAS ───
         protected Rigidbody2D rb;
         protected Animator animator;
         protected Weapon currentWeapon;
+        protected Ability currentAbility;
 
         // ─── INPUT ───
         protected Vector2 moveInput;
@@ -74,7 +76,6 @@ namespace PiroBros.Core
 
         protected abstract void Initialize();
 
-        // Nombre del personaje para mostrar en la UI
         public abstract string CharacterName { get; }
 
         // ────────────────────────────────────────────────────────────────────
@@ -140,12 +141,10 @@ namespace PiroBros.Core
 
         public void TakeDamage(int damage)
         {
-            // Ignorar daño si está invencible
             if (IsInvincible || !isAlive) return;
 
             lastDamageTime = Time.time;
 
-            // Avisar al GameManager que este personaje recibió daño
             Managers.GameManager.Instance.OnPlayerHit();
 
             StartCoroutine(InvincibilityBlink());
@@ -160,11 +159,19 @@ namespace PiroBros.Core
                 animator.SetTrigger("Die");
         }
 
-        // Reactiva el personaje cuando vuelve al pool
         public void Revive()
         {
             isAlive = true;
             StartCoroutine(InvincibilityBlink());
+        }
+
+        // ────────────────────────────────────────────────────────────────────
+        // INVENCIBILIDAD POR HABILIDAD
+        // ────────────────────────────────────────────────────────────────────
+
+        public void SetAbilityInvincible(bool value)
+        {
+            abilityInvincible = value;
         }
 
         // ────────────────────────────────────────────────────────────────────
@@ -200,6 +207,15 @@ namespace PiroBros.Core
         }
 
         // ────────────────────────────────────────────────────────────────────
+        // CONTACTO CON ENEMIGOS — Tombo sobreescribe esto
+        // ────────────────────────────────────────────────────────────────────
+
+        protected virtual void OnTriggerEnter2D(Collider2D other)
+        {
+            // Base vacía — cada personaje decide qué hacer al tocar algo
+        }
+
+        // ────────────────────────────────────────────────────────────────────
         // INPUT
         // ────────────────────────────────────────────────────────────────────
 
@@ -219,17 +235,35 @@ namespace PiroBros.Core
                 currentWeapon.Attack();
         }
 
+        public void OnAbility(InputValue value)
+        {
+            if (value.isPressed && currentAbility != null)
+                currentAbility.TryActivate();
+        }
+
+        // ────────────────────────────────────────────────────────────────────
+        // UI
+        // ────────────────────────────────────────────────────────────────────
+
+        protected virtual void OnHealthChanged(int current, int max) { }
+
+        public void RefreshUI()
+        {
+            if (Managers.UIManager.Instance != null)
+            {
+                Managers.UIManager.Instance.UpdateCharacterName(CharacterName);
+
+                // Refrescar UI de habilidad si existe
+                if (currentAbility != null)
+                    currentAbility.UpdateUI();
+            }
+        }
+
         // ────────────────────────────────────────────────────────────────────
         // PROPIEDADES
         // ────────────────────────────────────────────────────────────────────
 
         public bool IsAlive => isAlive;
-
-        public void RefreshUI()
-        {
-            if (Managers.UIManager.Instance != null)
-                Managers.UIManager.Instance.UpdateCharacterName(CharacterName);
-        }
 
         // ────────────────────────────────────────────────────────────────────
         // GIZMOS

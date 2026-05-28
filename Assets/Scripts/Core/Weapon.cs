@@ -12,7 +12,7 @@ namespace PiroBros.Core
     public abstract class Weapon : MonoBehaviour, IAttacker
     {
         [Header("Configuración Base")]
-        [SerializeField] protected int damage = 10;
+        [SerializeField] protected int damage = 50;
         [SerializeField] protected float fireRate = 0.3f;
         [SerializeField] protected float projectileSpeed = 15f;
         [SerializeField] protected Transform firePoint;

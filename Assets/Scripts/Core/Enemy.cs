@@ -15,7 +15,7 @@ namespace PiroBros.Core
     {
         // ─── STATS ───
         [Header("Estadísticas")]
-        [SerializeField] protected int maxHealth = 50;
+        [SerializeField] protected int maxHealth = 5;
         [SerializeField] protected float moveSpeed = 2.5f;
         [SerializeField] protected int attackDamage = 10;
 

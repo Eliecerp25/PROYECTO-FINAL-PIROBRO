@@ -25,7 +25,7 @@ namespace PiroBros.Enemies
 
         protected override void Initialize()
         {
-            maxHealth = 80;
+            maxHealth = 1;
             attackDamage = 1;    // quita una vida completa al contacto
             attackCooldown = 2f; // dispara cada 2 segundos
         }
